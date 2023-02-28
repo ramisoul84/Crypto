@@ -1,0 +1,16 @@
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 3rem;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  border-radius: 0 0 1.5rem 0;
+}
+header p {
+  line-height: 3rem;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 1.6rem;
+}

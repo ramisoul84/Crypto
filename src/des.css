@@ -1,0 +1,33 @@
+.des-details h1 {
+  text-align: center;
+}
+.des-details h4 {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  padding: 0.1rem;
+  margin: 1rem 0 0 0;
+  border-radius: 0.3rem;
+  border: 1px solid var(--color-dark);
+  width: fit-content;
+  font-size: 1rem;
+  font-weight: lighter;
+  cursor: pointer;
+}
+.des-details h2 {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  padding: 0.2rem;
+  margin: 1rem 0 0 0;
+  border-radius: 0.3rem;
+  border: 1px solid var(--color-dark);
+  font-size: 1.2rem;
+}
+.des-details span {
+  font-size: 1rem;
+  font-weight: normal;
+  color: var(--color-blue);
+}
+#pc1,
+#shift {
+  display: none;
+}

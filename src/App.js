@@ -1,24 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import { HashRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import Nav from "./components/Nav";
+import Home from "./components/Home";
+import Symmetric from "./components/Symmetric";
+import Asymmetric from "./components/Asymmetric";
+import DES from "./components/DES";
+import NoPage from "./components/NoPage";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <HashRouter>
+      <Header />
+      <Nav />
+      <Routes>
+        <Route index path="/" element={<Home />} />
+        <Route path="symmetric" element={<Symmetric />} />
+        <Route path="des" element={<DES />} />
+        <Route path="asymmetric" element={<Asymmetric />} />
+        <Route path="*" element={<NoPage />} />
+      </Routes>
+    </HashRouter>
   );
 }
 

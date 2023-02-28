@@ -1,0 +1,24 @@
+nav {
+  position: fixed;
+  left: 0;
+  top: 3rem;
+  bottom: 0;
+  width: 10rem;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  border-radius: 0 0 1.5rem 0;
+}
+nav li {
+  color: var(--color-blue);
+  text-align: left;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--color-light);
+}
+nav li:hover {
+  color: var(--color-light);
+  background-color: var(--color-red);
+}
+nav a {
+  cursor: pointer;
+  padding-left: 0.5rem;
+}
