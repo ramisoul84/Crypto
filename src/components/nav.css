@@ -22,3 +22,15 @@ nav a {
   cursor: pointer;
   padding-left: 0.5rem;
 }
+
+/* ========= Media Quiries  (small) ========== */
+@media screen and (max-width: 600px) {
+  nav {
+    width: 100vw;
+    height: fit-content;
+    border-radius: 0 0 1.5rem 1.5rem;
+  }
+  nav li {
+    text-align: center;
+  }
+}

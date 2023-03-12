@@ -17,6 +17,9 @@ const Nav = () => {
           <Link to="/hash">Hash Functions.</Link>
         </li>
         <li>
+          <Link to="/conv">Converters.</Link>
+        </li>
+        <li>
           <Link to="/contact">Contact</Link>
         </li>
       </ul>

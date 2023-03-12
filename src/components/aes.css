@@ -1,0 +1,46 @@
+#aes-details h1,
+h3 {
+  text-decoration: underline;
+}
+
+#aes-details h4 {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  width: fit-content;
+  font-weight: lighter;
+  font-size: 0.9rem;
+  padding: 0.1rem 1rem;
+  border: 1px solid var(--color-dark);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin: 0.5rem 2rem;
+}
+#aes-details h4:hover {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+}
+#aes-details span {
+  color: var(--color-blue);
+}
+#aes-details div {
+  display: none;
+  margin: 0.5rem 2rem;
+}
+
+#aes-details .words {
+  display: inline;
+}
+
+#aes-details .round-keys-table {
+  display: grid;
+  grid-template-columns: 12% 18% 5% 65%;
+}
+
+#aes-details .matrix td {
+  width: 1.6rem;
+}
+#aes-details .tables {
+  display: flex;
+
+  gap: 2rem;
+}

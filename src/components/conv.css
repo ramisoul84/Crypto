@@ -1,0 +1,19 @@
+#conv form {
+  display: grid;
+  grid-template-columns: 10fr 2fr 10fr;
+  justify-items: center;
+}
+
+#conv select {
+  width: 10rem;
+}
+
+#conv textarea {
+  width: 20rem;
+  margin-top: 2rem;
+}
+
+#conv button {
+  height: 2rem;
+  align-content: center;
+}

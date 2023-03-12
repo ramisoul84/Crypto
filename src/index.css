@@ -41,3 +41,10 @@ td {
   text-align: center;
   padding: 0 0.2rem;
 }
+
+/* ========= Media Quiries  (small) ========== */
+@media screen and (max-width: 600px) {
+  section {
+    margin: 12rem 1rem 1rem 1rem;
+  }
+}

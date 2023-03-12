@@ -254,7 +254,7 @@ const encrypt = (plainTextBin, keyBin) => {
     keys48: keys48,
     textIP: textIP,
     cipherTextBinBlocks: cipherTextBinBlocks,
-    cipherTextHex: cipherTextHex,
+    cipherTextBin: cipherTextBin,
   };
 };
 export { strToBin, hexToBin, encrypt };

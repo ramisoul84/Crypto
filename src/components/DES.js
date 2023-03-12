@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { MdOutlineDoubleArrow } from "react-icons/md";
-import * as DesAlgorithm from "../desAlgorithm";
+import * as DesAlgorithm from "../algorithms/des";
 import "./des.css";
 const DES = () => {
   const location = useLocation();
@@ -332,7 +332,7 @@ const DES = () => {
           = <span>{textIP.substring(32, 64)}</span>
         </p>
         <p>
-          Next er will iterate through 16 cycles, each using one of the 16
+          Next we will iterate through 16 cycles, each using one of the 16
           (48-bit) keys we computed previously. We will use a function{" "}
           <strong>f</strong> which operates over a data block of (32 bits) and a
           key Kn of (48 bits) to produce a (32 bits) block. For n from 1 to 16
@@ -428,6 +428,58 @@ const DES = () => {
         <p>
           Then <strong>S</strong> splits the (48 bits) into eight groups of six
           bits, and each group gets ran through the S-box as follows:
+        </p>
+        <p>
+          for <strong>n</strong> = 1
+        </p>
+        <p>
+          <strong>
+            k<sub>1</sub>
+          </strong>{" "}
+          = <span>{keys48[0]}</span>
+        </p>
+        <p>
+          <strong>
+            L<sub>1</sub>
+          </strong>
+          =
+          <strong>
+            R<sub>0</sub>
+          </strong>{" "}
+          = <span>{textIP.substring(32, 64)}</span>
+        </p>
+        <p>
+          <strong>
+            R<sub>1</sub>
+          </strong>
+          =
+          <strong>
+            L<sub>0</sub>
+          </strong>
+          ⊕<strong>f</strong>(
+          <strong>
+            R<sub>0</sub>
+          </strong>
+          ,
+          <strong>
+            k<sub>1</sub>
+          </strong>
+          ) Where <strong>f</strong> = <strong>P</strong>(<strong>S</strong>(
+          <strong>
+            k<sub>1</sub>
+          </strong>
+          ⊕ <strong>E</strong>(
+          <strong>
+            R<sub>1</sub>
+          </strong>
+          )))
+        </p>
+        <p>
+          <strong>E</strong>(
+          <strong>
+            R<sub>0</sub>
+          </strong>
+          ) =
         </p>
       </div>
     </section>
