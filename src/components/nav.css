@@ -22,6 +22,9 @@ nav a {
   cursor: pointer;
   padding-left: 0.5rem;
 }
+nav a:visited {
+  color: inherit;
+}
 
 /* ========= Media Quiries  (small) ========== */
 @media screen and (max-width: 600px) {

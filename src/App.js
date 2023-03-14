@@ -1,13 +1,13 @@
 import { HashRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Nav from "./components/Nav";
-import Home from "./components/Home";
-import Symmetric from "./components/Symmetric";
-import Asymmetric from "./components/Asymmetric";
-import DES from "./components/DES";
-import AES from "./components/AES";
-import Conv from "./components/Conv";
-import NoPage from "./components/NoPage";
+import Header from "./components/Header.js";
+import Nav from "./components/Nav.js";
+import Home from "./components/Home.js";
+import Symmetric from "./components/Symmetric.js";
+import Asymmetric from "./components/Asymmetric.js";
+import DES from "./components/DES.js";
+import AES from "./components/AES.js";
+import Conv from "./components/Conv.js";
+import NoPage from "./components/NoPage.js";
 
 function App() {
   return (

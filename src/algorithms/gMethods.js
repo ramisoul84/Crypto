@@ -20,6 +20,17 @@ const hexToBin = (hex) => {
     .join("");
 };
 
+//
+const binToHex = (bin) => {
+  let hex = "";
+  for (let i = 0; i < bin.length / 4; i++) {
+    hex += parseInt(bin.substring(i * 4, i * 4 + 4), 2)
+      .toString(16)
+      .toUpperCase();
+  }
+  return hex;
+};
+
 // XORing two Binary numbers bin1,bin2 : (same length)
 const xor = (bin1, bin2) => {
   let res = "";
@@ -44,14 +55,26 @@ const xorMat = (matA, matB) => {
   }
   return newMat;
 };
-
-// Convert a 128-bits binary vector to Matrix 4*4 (binary)
-const vectorToMatrix = (bin) => {
-  let matrix = [];
+//Convert a 128-bits binary vector to array of
+const vectorToArr = (bin) => {
   let arr = []; // Array of Bytes...
   for (let i = 0; i < bin.length / 8; i++) {
     arr.push(bin.substring(i * 8, i * 8 + 8));
   }
+  return arr;
+};
+const vectorToArrHex = (bin) => {
+  let arr = []; // Array of Bytes...
+  for (let i = 0; i < bin.length / 8; i++) {
+    arr.push(binToHex(bin.substring(i * 8, i * 8 + 8)));
+  }
+  return arr;
+};
+
+// Convert a 128-bits binary vector to Matrix 4*4 (binary)
+const vectorToMatrix = (bin) => {
+  let matrix = [];
+  const arr = vectorToArr(bin);
   for (let i = 0; i < 4; i++) {
     matrix[i] = [];
     for (let j = 0; j < 4; j++) {
@@ -116,6 +139,7 @@ const showHexFormat = (bin) => {
       parseInt(bin.substring(i * 8, i * 8 + 8), 2)
         .toString(16)
         .toUpperCase()
+        .padStart(2, "0")
     );
   }
   return hex.join(" ");
@@ -133,15 +157,28 @@ const matHex = (mat) => {
   return newMat;
 };
 
+const createTable = (r, c, data) => {
+  let ul = [];
+  for (let i = 0; i < r; i++) {
+    for (let j = 0; j < c; j++) {
+      ul.push(<td>{data[i * r + j]}</td>);
+    }
+    ul.push(<tr></tr>);
+  }
+  return ul;
+};
+
 export {
   txtToBin,
   hexToBin,
   xor,
   xorMat,
+  vectorToArrHex,
   vectorToMatrix,
   matrixToVector,
   wordToBytes,
   messageToBlocks,
   showHexFormat,
   matHex,
+  createTable,
 };

@@ -1,3 +1,17 @@
+/* - - - - - - - - - - - - - - - - - - - - - - - */
+/*                   DES Crypto                  */
+/* - - - - - - - - - - - - - - - - - - - - - - - */
+
+import {
+  txtToBin,
+  xor,
+  xorMat,
+  vectorToMatrix,
+  matrixToVector,
+  wordToBytes,
+  messageToBlocks,
+} from "./gMethods";
+
 // Declaring Permutation Tables .....
 const PC1 = [
   57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2, 59, 51, 43, 35,
@@ -175,19 +189,6 @@ const splitText = (plainTextBin) => {
     plainTextBinBlocks.push(plainTextBin.substring(i * 64, i * 64 + 64));
   }
   return [plainTextBinBlocks, addedDigits];
-};
-
-// Xoring method
-const xor = (a, b) => {
-  let res = "";
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] === b[i]) {
-      res += "0";
-    } else {
-      res += "1";
-    }
-  }
-  return res;
 };
 
 //a method to convert decimal to binary used in f function

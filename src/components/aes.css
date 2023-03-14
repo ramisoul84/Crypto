@@ -1,9 +1,8 @@
-#aes-details h1,
+#aes h1,
 h3 {
   text-decoration: underline;
 }
-
-#aes-details h4 {
+#aes h4 {
   background-color: var(--color-dark);
   color: var(--color-light);
   width: fit-content;
@@ -13,34 +12,39 @@ h3 {
   border: 1px solid var(--color-dark);
   border-radius: 0.5rem;
   cursor: pointer;
-  margin: 0.5rem 2rem;
+  margin: 0.5rem 1rem;
 }
-#aes-details h4:hover {
+#aes h4:hover {
   background-color: var(--color-light);
   color: var(--color-dark);
 }
-#aes-details span {
+#aes span {
   color: var(--color-blue);
 }
-#aes-details div {
+#aes > div {
   display: none;
   margin: 0.5rem 2rem;
 }
-
-#aes-details .words {
+#aes .words {
   display: inline;
 }
-
-#aes-details .round-keys-table {
+#aes .round-keys-table {
   display: grid;
   grid-template-columns: 12% 18% 5% 65%;
 }
 
-#aes-details .matrix td {
-  width: 1.6rem;
+#aes th {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  padding: 0 0.4rem;
 }
-#aes-details .tables {
-  display: flex;
+#aes td {
+  border: 1px solid var(--color-dark);
+  text-align: center;
+  padding: 0 0.2rem;
+}
 
-  gap: 2rem;
+#aes .table-states td {
+  color: var(--color-blue);
+  font-size: 0.8rem;
 }

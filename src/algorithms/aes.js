@@ -3,15 +3,13 @@
 /* - - - - - - - - - - - - - - - - - - - - - - - */
 
 import {
-  txtToBin,
   xor,
   xorMat,
   vectorToMatrix,
   matrixToVector,
   wordToBytes,
   messageToBlocks,
-} from "./general.js";
-
+} from "./gMethods";
 // Rijndael S-box
 const sBox = [
   0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe,
@@ -231,34 +229,55 @@ const encryptBlock = (plainTextBin, keyBin) => {
   const nK = keyBin.length / 32;
   const nR = nK + 6;
   const roundKeys = keyExpansion(keyBin).roundKeys;
-  let stateMatrix = [];
-  stateMatrix.push(
+  console.log(nR);
+
+  let state = [];
+  state[0] = [];
+  state[0].push(vectorToMatrix(plainTextBin));
+  state[0].push("");
+  state[0].push("");
+  state[0].push("");
+  state[0].push(vectorToMatrix(roundKeys[0]));
+  state[0].push(
     xorMat(vectorToMatrix(plainTextBin), vectorToMatrix(roundKeys[0]))
   );
+  console.log(state[0][1]);
+
   for (let i = 1; i < nR; i++) {
-    stateMatrix.push(
-      xorMat(
-        mixColumns(shiftRows(subMatrix(stateMatrix[i - 1]))),
-        vectorToMatrix(roundKeys[i])
-      )
-    );
+    state[i] = [];
+    state[i].push(state[i - 1][5]);
+    state[i].push(subMatrix(state[i - 1][5]));
+    state[i].push(shiftRows(subMatrix(state[i - 1][5])));
+    state[i].push(mixColumns(shiftRows(subMatrix(state[i - 1][5]))));
+    state[i].push(vectorToMatrix(roundKeys[i]));
+    state[i].push(xorMat(state[i][3], state[i][4]));
   }
-  stateMatrix.push(
+  state[nR] = [];
+  state[nR].push(state[nR - 1][5]);
+  state[nR].push(subMatrix(state[nR - 1][5]));
+  state[nR].push(shiftRows(subMatrix(state[nR - 1][5])));
+  state[nR].push("");
+  state[nR].push(vectorToMatrix(roundKeys[nR]));
+  state[nR].push(
     xorMat(
-      shiftRows(subMatrix(stateMatrix[nR - 1])),
+      shiftRows(subMatrix(state[nR - 1][5])),
       vectorToMatrix(roundKeys[nR])
     )
   );
-  const states = stateMatrix.map((e) => {
-    return matrixToVector(e);
-  });
-  return states[nR];
+  const states = [];
+  for (let i = 0; i <= nR; i++) {
+    states[i] = [];
+    for (let j = 0; j < 6; j++) {
+      states[i].push(state[i][j] !== "" ? matrixToVector(state[i][j]) : "");
+    }
+  }
+  const cipher = states[nR][5];
+  return { cipher, states };
 };
 
 // Main AES method to encrypt a message (binary)
 const encrypt = (plainTextBin, keyBin) => {
   const nK = keyBin.length / 32; // Number of (32-bit) words in Key -> 4/6/8 for 128/192/256-bit keys..
-  const nR = nK + 6; // Number of rounds -> 10/12/14 for 128/192/256-bit keys..
   const blockSize = 128;
   const addedDigits = messageToBlocks(plainTextBin, blockSize).addedDigits;
   const numberOfBlocks = messageToBlocks(
@@ -272,31 +291,26 @@ const encrypt = (plainTextBin, keyBin) => {
   const roundKeysWords = keyExpansion(keyBin).roundKeysWords;
   const roundKeys = keyExpansion(keyBin).roundKeys;
   const table = keyExpansion(keyBin).table;
+
   //
+
   const cipherTextBinBlocks = [];
   for (let i = 0; i < numberOfBlocks; i++) {
-    cipherTextBinBlocks.push(encryptBlock(plainTextBinBlocks[i], keyBin));
+    cipherTextBinBlocks.push(
+      encryptBlock(plainTextBinBlocks[i], keyBin).cipher
+    );
   }
   const cipherTextBin = cipherTextBinBlocks.join("");
+  const states = encryptBlock(plainTextBinBlocks[0], keyBin).states;
   return {
-    nK: nK,
-
-    numberOfBlocks: numberOfBlocks,
-    cipherTextBin: cipherTextBin,
-    roundKeysWords: roundKeysWords,
-    roundKeys: roundKeys,
-    table: table,
+    nK,
+    plainTextBinBlocks,
+    roundKeysWords,
+    table,
+    roundKeys,
+    states,
+    cipherTextBin,
   };
 };
 
 export { encrypt };
-
-//
-const plainText = txtToBin("Two One Nine Two....");
-const key = txtToBin("Thats my Kung Fu");
-
-encrypt(plainText, key);
-console.log(key);
-console.log(encrypt(plainText, key).numberOfBlocks);
-console.log(encrypt(plainText, key).cipherTextBin);
-console.log(encrypt(plainText, key).table);

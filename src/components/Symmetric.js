@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import * as DesAlgorithm from "../algorithms/des";
-import * as AesAlgorithm from "../algorithms/aes";
-import { showHexFormat } from "../algorithms/general";
+import * as DES from "../algorithms/des";
+import * as AES from "../algorithms/aes";
+import { txtToBin, hexToBin, showHexFormat } from "../algorithms/gMethods";
 import { MdOutlineDoubleArrow } from "react-icons/md";
 import "./symmetric.css";
 const Symmetric = () => {
+  // Main Paraameters in Form
   const [data, setData] = useState({
     algo: "",
     mode: "",
@@ -13,6 +14,17 @@ const Symmetric = () => {
     key: "",
     keyRadio: "str",
   });
+  // method to change Parameters by any change in inputs ..
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setData((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+  // key length, depends on  choosen algorithm and key format
   const [keyLength, setKeyLength] = useState(0);
   const keyLenCalc = () => {
     if (data.algo === "des" && data.keyRadio === "str") {
@@ -33,6 +45,8 @@ const Symmetric = () => {
       setKeyLength(64);
     } else setKeyLength(0);
   };
+  useEffect(keyLenCalc, [data.algo, data.keyRadio]);
+  // a method to check validation of all inputs ..
   const validateForm = () => {
     const button = document.getElementById("submit");
     const keyGen = document.getElementById("key-gen");
@@ -56,7 +70,6 @@ const Symmetric = () => {
       keyGen.disabled = true;
     }
   };
-  useEffect(keyLenCalc, [data.algo, data.keyRadio]);
   useEffect(validateForm, [
     data.algo,
     data.keyRadio,
@@ -64,26 +77,40 @@ const Symmetric = () => {
     data.mode,
     data.plainText,
   ]);
+  // result parameters, which calculated by crypto algoritms ..
   const [result, setResult] = useState({
     numberOfBlocks: 0,
     plainTextBinBlocks: [],
     addedDigets: 0,
     cipherTextBin: "",
   });
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setData((prev) => {
+  // submit function , enable when all inputs are valid..
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const plainTextBin = txtToBin(data.plainText);
+    const keyBin =
+      data.keyRadio === "str" ? txtToBin(data.key) : hexToBin(data.key);
+    const { numberOfBlocks, plainTextBinBlocks, cipherTextBin } =
+      data.algo === "des"
+        ? DES.encrypt(plainTextBin, keyBin)
+        : AES.encrypt(plainTextBin, keyBin);
+    setResult((prev) => {
       return {
         ...prev,
-        [name]: value,
+        numberOfBlocks: numberOfBlocks,
+        plainTextBinBlocks: plainTextBinBlocks,
+        keyBin: keyBin,
+        cipherTextBin: cipherTextBin,
       };
     });
+    const res = document.getElementById("result-cipher");
+    res.style.display = "block";
   };
-  const showAlert = () => {
+  // a method to generate a key ..
+  const generate = () => {
     const charactersStr =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     const charactersHex = "0123456789ABCDEF";
-
     let key = "";
     const len =
       data.keyRadio === "str" ? charactersStr.length : charactersHex.length;
@@ -98,36 +125,12 @@ const Symmetric = () => {
       };
     });
   };
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const plainTextBin = DesAlgorithm.strToBin(data.plainText);
-    const keyBin =
-      data.keyRadio === "str"
-        ? DesAlgorithm.strToBin(data.key)
-        : DesAlgorithm.hexToBin(data.key);
-    const { numberOfBlocks, plainTextBinBlocks, cipherTextBin } =
-      data.algo === "des"
-        ? DesAlgorithm.encrypt(plainTextBin, keyBin)
-        : AesAlgorithm.encrypt(plainTextBin, keyBin);
-
-    setResult((prev) => {
-      return {
-        ...prev,
-        numberOfBlocks: numberOfBlocks,
-        plainTextBinBlocks: plainTextBinBlocks,
-        keyBin: keyBin,
-        cipherTextBin: cipherTextBin,
-      };
-    });
-    const res = document.getElementById("result-cipher");
-    res.style.display = "block";
-  };
 
   return (
     <section id="symmetric">
       <div>
         <form onSubmit={handleSubmit}>
-          {/* SELECT */}
+          {/* -----------SELECT----------- */}
           <label htmlFor="algo">Algorithm</label>
           <select id="algo" name="algo" onChange={handleChange} required>
             <option value="">--Choose an algorithm--</option>
@@ -146,7 +149,7 @@ const Symmetric = () => {
             <option value="ofb">OFB</option>
             <option value="ctr">CTR</option>
           </select>
-          {/* KEY */}
+          {/* -----------Key Input----------- */}
           <label htmlFor="key">
             Key
             <span>({data.keyRadio === "str" ? "String" : "Hexadecimal "})</span>
@@ -205,14 +208,14 @@ const Symmetric = () => {
               title={
                 data.keyRadio === "str"
                   ? "8 charachters of any type"
-                  : "16 Hexa charachters [a-f & 0-9]"
+                  : "16 Hexa charachters [A-F & 0-9]"
               }
               autocomplete="off"
             />
             <input
               type="button"
+              onClick={generate}
               value="Generate"
-              onClick={showAlert}
               id="key-gen"
               aria-disabled
             />
@@ -237,8 +240,7 @@ const Symmetric = () => {
             />
             <label for="key-hex">HEX</label>
           </div>
-
-          {/* PLAINTEXT */}
+          {/* -----------Plain Text Input----------- */}
           <label htmlFor="plainText">
             Plain Text
             <span>(String)</span>

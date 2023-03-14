@@ -1,11 +1,11 @@
 #home h4 {
-  margin-top: 1rem;
+  margin-top: 0.5rem;
 }
 
 #home a {
   background-color: var(--color-dark);
   color: var(--color-light);
-  margin: 1rem 0.5rem 0 0;
+  margin: 0.5rem 0.5rem 0 0;
   padding: 0.2rem;
   border: 2px solid var(--color-dark);
   border-radius: 0.5rem;
@@ -17,6 +17,6 @@
 }
 
 #home .examples {
-  margin-top: 0.5rem;
   display: flex;
+  margin-bottom: 1.5rem;
 }
