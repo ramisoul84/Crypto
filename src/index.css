@@ -20,6 +20,7 @@ body {
   background-color: var(--color-light);
   overflow-y: scroll;
 }
+
 /*
 a:link {
   color: inherit;

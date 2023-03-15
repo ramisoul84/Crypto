@@ -1,7 +1,7 @@
 /* - - - - - - - - - - - - - - - - - - - - - - - */
 /*  General Methods used in AES, DES Encryption  */
 /* - - - - - - - - - - - - - - - - - - - - - - - */
-
+import React from "react";
 // Text to Binary Converter :  char -> (8-bit)
 const txtToBin = (txt) => {
   return txt
@@ -161,7 +161,7 @@ const createTable = (r, c, data) => {
   let ul = [];
   for (let i = 0; i < r; i++) {
     for (let j = 0; j < c; j++) {
-      ul.push(<td>{data[i * r + j]}</td>);
+      ul.push(<td>{data[i * c + j]}</td>);
     }
     ul.push(<tr></tr>);
   }
@@ -171,6 +171,7 @@ const createTable = (r, c, data) => {
 export {
   txtToBin,
   hexToBin,
+  binToHex,
   xor,
   xorMat,
   vectorToArrHex,

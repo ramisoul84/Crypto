@@ -34,17 +34,31 @@ h3 {
 }
 
 #aes th {
-  background-color: var(--color-dark);
-  color: var(--color-light);
-  padding: 0 0.4rem;
+  color: var(--color-dark);
+  padding: 0 auto;
 }
 #aes td {
   border: 1px solid var(--color-dark);
   text-align: center;
   padding: 0 0.2rem;
+  font-size: 0.8rem;
+}
+#aes .round > td {
+  border: 0;
 }
 
 #aes .table-states td {
-  color: var(--color-blue);
   font-size: 0.8rem;
+}
+#aes .rounds-table {
+  border: 0;
+}
+#aes .rounds-table td {
+  width: 2rem;
+  background-color: rgb(228, 212, 212);
+}
+#aes .border {
+  border: 1px solid var(--color-dark);
+  display: inline;
+  padding: 0 0.2rem;
 }

@@ -1,8 +1,4 @@
 const NoPage = () => {
-  return (
-    <section>
-      <p>NoPage</p>
-    </section>
-  );
+  return <section>NoPage</section>;
 };
 export default NoPage;

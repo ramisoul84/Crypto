@@ -271,7 +271,9 @@ const encryptBlock = (plainTextBin, keyBin) => {
       states[i].push(state[i][j] !== "" ? matrixToVector(state[i][j]) : "");
     }
   }
-  const cipher = states[nR][5];
+
+  const cipher = matrixToVector(vectorToMatrix(states[nR][5]));
+
   return { cipher, states };
 };
 
@@ -304,6 +306,7 @@ const encrypt = (plainTextBin, keyBin) => {
   const states = encryptBlock(plainTextBinBlocks[0], keyBin).states;
   return {
     nK,
+    numberOfBlocks,
     plainTextBinBlocks,
     roundKeysWords,
     table,
