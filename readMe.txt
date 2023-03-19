@@ -2,6 +2,7 @@
 1. npx create-react-app cryptography
 2. npm i -D react-router-dom
 3. npm i react-icons --save
+npm i eccrypto
 4. package.json -> "type": "module"
 
 

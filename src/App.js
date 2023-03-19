@@ -6,6 +6,7 @@ import Symmetric from "./components/Symmetric.js";
 import Asymmetric from "./components/Asymmetric.js";
 import DES from "./components/DES.js";
 import AES from "./components/AES.js";
+import ECC from "./components/ECC.js";
 import Conv from "./components/Conv.js";
 import NoPage from "./components/NoPage.js";
 
@@ -20,6 +21,7 @@ function App() {
         <Route path="des" element={<DES />} />
         <Route path="aes" element={<AES />} />
         <Route path="asymmetric" element={<Asymmetric />} />
+        <Route path="ecc" element={<ECC />} />
         <Route path="conv" element={<Conv />} />
         <Route path="*" element={<NoPage />} />
       </Routes>

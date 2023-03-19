@@ -1,0 +1,7 @@
+#ecc input {
+  width: 4rem;
+}
+#ecc form {
+  display: grid;
+  grid-template-columns: 1rem 6rem;
+}
