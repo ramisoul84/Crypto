@@ -20,3 +20,10 @@
   display: flex;
   margin-bottom: 1.5rem;
 }
+
+/* ========= Media Quiries  (small) ========== */
+@media screen and (max-width: 600px) {
+  header {
+    border-radius: 0 0 1.5rem 1.5rem;
+  }
+}

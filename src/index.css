@@ -21,35 +21,9 @@ body {
   overflow-y: scroll;
 }
 
-/*
-a:link {
-  color: inherit;
-}
-a:active {
-  color: inherit;
-}
-a:visited {
-  color: inherit;
-}
-a:hover {
-  color: inherit;
-}
-/*
-section {
-  color: var(--color-dark);
-}
-table,
-th,
-td {
-  border: 1px solid var(--color-dark);
-  border-collapse: collapse;
-  text-align: center;
-  padding: 0 0.2rem;
-}
-
 /* ========= Media Quiries  (small) ========== */
 @media screen and (max-width: 600px) {
-  section {
+  body {
     margin: 12rem 1rem 1rem 1rem;
   }
 }

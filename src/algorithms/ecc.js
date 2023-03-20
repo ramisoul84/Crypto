@@ -1,3 +1,4 @@
+// Inverse Modulo
 function modInverse(a, m) {
   // validate inputs
   [a, m] = [Number(a), Number(m)];
@@ -26,14 +27,38 @@ function modInverse(a, m) {
   }
   return ((y % m) + m) % m;
 }
-
-const isOnCurve = (point) => {
-  const x = point.x;
-  const y = point.y;
-  return (y * y - x * x * x - curve.a * x - curve.b) % curve.p === 0;
+// check if a point on curve
+const isOnCurve = (point, a, b, p) => {
+  const x = point[0];
+  const y = point[1];
+  return (y * y - x * x * x - a * x - b) % p === 0;
 };
-
-const addPoints = (P, Q) => {
+// Add two points
+const addPoints = (P, Q, a, b, p) => {
+  let R = [null, null];
+  let m;
+  if (P[0] === null && P[1] === null) {
+    R = [Q[0], Q[1]];
+  } else if (Q[0] === null && Q[1] === null) {
+    R = [P[0], P[1]];
+  } else if (P[0] === Q[0] && P[1] !== Q[1]) {
+    R = [null, null];
+  } else if (P[0] === Q[0] && P[1] === Q[1]) {
+    m = (3 * P[0] * P[0] + a) * modInverse(2 * P[1], p);
+    R[0] = (m * m - P[0] - Q[0]) % p;
+    R[1] = (m * (Q[0] - R[0]) - Q[1]) % p;
+  } else {
+    m = (Q[1] - P[1]) * modInverse(Q[0] - P[0], p);
+    R[0] = (m * m - P[0] - Q[0]) % p;
+    R[1] = (m * (Q[0] - R[0]) - Q[1]) % p;
+  }
+  R[0] = R[0] < 0 ? R[0] + p : R[0]; // if negative add p
+  R[1] = R[1] < 0 ? R[1] + p : R[1];
+  console.log(R[0]);
+  return isOnCurve(R, a, b, p) ? R : [null, null];
+};
+/*
+const addPoints = (P, Q, a, b, p) => {
   let R = { x: null, y: null };
   let m;
   if (P.x === null && P.y === null) {
@@ -43,76 +68,50 @@ const addPoints = (P, Q) => {
   } else if (P.x === Q.x && P.y !== Q.y) {
     R = { x: null, y: null };
   } else if (P.x === Q.x && P.y === Q.y) {
-    m = (3 * P.x * P.x + curve.a) * modInverse(2 * P.y, curve.p);
-    R.x = (m * m - P.x - Q.x) % curve.p;
-    R.y = (m * (Q.x - R.x) - Q.y) % curve.p;
+    m = (3 * P.x * P.x + a) * modInverse(2 * P.y, p);
+    R.x = (m * m - P.x - Q.x) % p;
+    R.y = (m * (Q.x - R.x) - Q.y) % p;
   } else {
-    m = (Q.y - P.y) * modInverse(Q.x - P.x, curve.p);
-    R.x = (m * m - P.x - Q.x) % curve.p;
-    R.y = (m * (Q.x - R.x) - Q.y) % curve.p;
+    m = (Q.y - P.y) * modInverse(Q.x - P.x, p);
+    R.x = (m * m - P.x - Q.x) % p;
+    R.y = (m * (Q.x - R.x) - Q.y) % p;
   }
-
-  R.x = R.x <= 0 ? R.x + curve.p : R.x; // if negative add p
-  R.y = R.y <= 0 ? R.y + curve.p : R.y;
-  R.y = R.y === curve.p ? 0 : R.y; // if  p return 0
-  R.x = R.x === curve.p ? 0 : R.x;
-  console.log(`P(${P.x},${P.y})+Q(${Q.x},${Q.y})=R(${R.x},${R.y})`);
+  R.x = R.x < 0 ? R.x + p : R.x; // if negative add p
+  R.y = R.y < 0 ? R.y + p : R.y;
   return isOnCurve(R) ? R : { x: null, y: null };
 };
-
-const pointsGen1 = (a, b, p) => {
-  let points = [];
-  let point = { x: null, y: null };
-  let count = 0;
-  for (let x = 0; x < p; x++) {
-    for (let y = 0; y < p; y++) {
-      let point = { x: x, y: y };
-      if ((x * x * x + a * x + b - y * y) % p === 0) {
-        points.push(point);
-        count++;
-      }
-    }
-  }
-  console.log(count);
-  return points;
-};
+*/
+// find all points that ocated on curve
 const pointsGen = (a, b, p) => {
+  [a, b, p] = [Number(a), Number(b), Number(p)];
+  //const prime = p <= 50 ? p : 50;
   let points = [];
-  let count = 0;
   for (let x = 0; x < p; x++) {
     for (let y = 0; y < p; y++) {
       if ((x * x * x + a * x + b - y * y) % p === 0) {
         points.push([x, y]);
-        count++;
       }
     }
   }
-  console.log(count);
   return points;
 };
 
-const multPoint = (point, k) => {
-  const x = point.x;
-  const y = point.y;
+const multPoint = (point, k, a, b, p) => {
+  [a, b, p] = [Number(a), Number(b), Number(p)];
   const points = [];
+  points.push([null, null]);
   points.push(point);
-  points.push(addPoints(points[0], point));
-  for (let i = 2; i < k; i++) {
-    points.push(addPoints(points[0], points[i - 1]));
+  points.push(addPoints(points[1], point, a, b, p));
+  for (let i = 3; i <= k; i++) {
+    points.push(addPoints(points[1], points[i - 1], a, b, p));
   }
   return points;
 };
 
-const curve = {
-  a: 0,
-  b: 7,
-  p: 17,
-};
-const xx = pointsGen(0, 7, 17);
-console.log(xx);
+export { pointsGen, multPoint };
 
-//let R = addPoints({ x: 6, y: 1 }, { x: 8, y: 1 });
-//nsole.log(`R(${R.x},${R.y})`);
-
-export { pointsGen };
-console.log("hi");
+let a = 0;
+let b = 7;
+let p = 17;
+console.log(pointsGen(a, b, p));
+console.log(multPoint([15, 13], 20, a, b, p));

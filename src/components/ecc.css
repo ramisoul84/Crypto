@@ -1,7 +1,34 @@
-#ecc input {
-  width: 4rem;
-}
 #ecc form {
   display: grid;
-  grid-template-columns: 1rem 6rem;
+  grid-template-columns: repeat(3, 2rem 6rem);
+  text-align: center;
+}
+#ecc label {
+  width: 2rem;
+}
+#ecc input {
+  width: 5rem;
+}
+#ecc input[type="submit"] {
+  margin-top: 0.5rem;
+  width: 22rem;
+  height: 2rem;
+  margin-left: 2rem;
+}
+
+/* ========= Media Quiries  (small) ========== */
+@media screen and (max-width: 600px) {
+  #ecc form {
+    grid-template-columns: repeat(3, 1rem 3.5rem);
+  }
+  #ecc label {
+    width: 1rem;
+  }
+  #ecc input {
+    width: 3rem;
+  }
+  #ecc input[type="submit"] {
+    width: 12.5rem;
+    margin-left: 1rem;
+  }
 }
