@@ -7,6 +7,7 @@ header {
   background-color: var(--color-dark);
   color: var(--color-light);
   border-radius: 0 0 1.5rem 0;
+  z-index: 9;
 }
 header p {
   line-height: 3rem;

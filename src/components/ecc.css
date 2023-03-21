@@ -15,6 +15,9 @@
   height: 2rem;
   margin-left: 2rem;
 }
+#ecc .chart {
+  display: none;
+}
 
 /* ========= Media Quiries  (small) ========== */
 @media screen and (max-width: 600px) {
@@ -30,5 +33,9 @@
   #ecc input[type="submit"] {
     width: 12.5rem;
     margin-left: 1rem;
+  }
+  #ecc ScatterChart {
+    width: 20rem;
+    height: 20rem;
   }
 }

@@ -1,5 +1,14 @@
 import { useState, useEffect } from "react";
 import * as EEc from "../algorithms/ecc";
+import {
+  ScatterChart,
+  Scatter,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 import "./ecc.css";
 
 const ECC = () => {
@@ -16,6 +25,7 @@ const ECC = () => {
     823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919,
     929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997,
   ];
+
   const [curve, setCurve] = useState({
     a: 0,
     b: 0,
@@ -27,6 +37,7 @@ const ECC = () => {
     y: 0,
   });
   const [points, setPoints] = useState([]);
+
   const [pointsX, setPointsX] = useState([]);
   const [pointsY, setPointsY] = useState([]);
 
@@ -51,11 +62,13 @@ const ECC = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    const chart = document.querySelector(".chart");
     setPoints(EEc.pointsGen(curve.a, curve.b, curve.p));
+
+    chart.style.display = "block";
   };
   const handleSubmit1 = (e) => {
     e.preventDefault();
-
     setMPoints(
       EEc.multPoint([mult.x, mult.y], mult.k, curve.a, curve.b, curve.p)
     );
@@ -65,6 +78,7 @@ const ECC = () => {
     points.map((e) => {
       return x.push(e[0]);
     });
+    x = x.filter((item, index) => x.indexOf(item) === index);
     setPointsX(x);
   };
   const setY = () => {
@@ -74,8 +88,17 @@ const ECC = () => {
     }
     setPointsY(y);
   };
+  const set0 = () => {
+    setMult((prev) => {
+      return {
+        ...prev,
+        y: pointsY[0],
+      };
+    });
+  };
   useEffect(setX, [points]);
   useEffect(setY, [mult.x, points]);
+  useEffect(set0, [pointsY, pointsX]);
   return (
     <section id="ecc">
       <p>
@@ -113,7 +136,7 @@ const ECC = () => {
         y<sup>2</sup>=x<sup>3</sup>+{curve.a}
         x+{curve.b} over 𝔽<sub>{curve.p}</sub> Points
       </p>
-      <p>
+      <p style={{ fontSize: "0.7rem" }}>
         {points.map((e, i) => {
           return (
             <>
@@ -124,6 +147,21 @@ const ECC = () => {
         ,and O (Infinity)
       </p>
       <p>Number of Points in this curve:{points.length + 1}</p>
+
+      <ResponsiveContainer width="90%" height={500} className="chart">
+        <ScatterChart>
+          <CartesianGrid />
+          <XAxis type="number" dataKey="x" />
+          <YAxis type="number" dataKey="y" />
+          <Tooltip cursor={{}} />
+          <Scatter
+            data={points.map((e, i) => {
+              return { x: e[0], y: e[1] };
+            })}
+            fill="var(--color-dark)"
+          />
+        </ScatterChart>
+      </ResponsiveContainer>
       <strong>Point Multiplication</strong>
       <form onSubmit={handleSubmit1} className="ecc-mult">
         <label>k</label>
@@ -147,6 +185,7 @@ const ECC = () => {
         multiply the generator point G({mult.x},{mult.y}) by 0, 1, .., {mult.k}
       </p>
       <p>
+        {mult.x * mult.y === 0 && <p>{mult.y}</p>}
         {mPoints.map((e, i) => {
           return (
             <p>
