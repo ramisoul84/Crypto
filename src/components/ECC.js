@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { MdOutlineDoubleArrow } from "react-icons/md";
 import * as EEc from "../algorithms/ecc";
 import {
   ScatterChart,
@@ -37,11 +38,22 @@ const ECC = () => {
     y: 0,
   });
   const [points, setPoints] = useState([]);
-
   const [pointsX, setPointsX] = useState([]);
   const [pointsY, setPointsY] = useState([]);
-
   const [mPoints, setMPoints] = useState([]);
+  const toggle = (e) => {
+    const el = e.target.className;
+    const element = document.getElementById(`${el}`);
+    console.log(e.target);
+
+    return (element.style.display =
+      element.style.display === "block" ? "none" : "block").then(
+      element.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      })
+    );
+  };
   const handleChange = (e) => {
     const { value, name } = e.target;
     setCurve((prev) => {
@@ -62,7 +74,7 @@ const ECC = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    const chart = document.querySelector(".chart");
+    const chart = document.querySelector(".ecc-simple-res");
     setPoints(EEc.pointsGen(curve.a, curve.b, curve.p));
 
     chart.style.display = "block";
@@ -101,99 +113,148 @@ const ECC = () => {
   useEffect(set0, [pointsY, pointsX]);
   return (
     <section id="ecc">
+      <h1>Elliptic Curve Cryptography - ECC</h1>
+
       <p>
-        The elliptic curve cryptography (ECC) uses elliptic curves over the
-        finite field 𝔽p (where p is prime and p &gt; 3) . This means that the
-        field is a square matrix of size[p x p] and the points on the curve are
-        limited to integer coordinates within the field only. All algebraic
-        operations within the field (like point addition and multiplication)
-        result in another point within the field. The elliptic curve equation
-        over the finite field 𝔽p takes the following modular form: y<sup>2</sup>
+        ECC uses elliptic curves over the finite field 𝔽p (where p is prime and
+        p &gt; 3) . This means that the field is a square matrix of size[p x p]
+        and the points on the curve are limited to integer coordinates within
+        the field only. All algebraic operations within the field (like point
+        addition and multiplication) result in another point within the field.
+        The elliptic curve equation over the finite field 𝔽p takes the following
+        modular form: y<sup>2</sup>
         =x
         <sup>3</sup>+<strong>a</strong>x+<strong>b</strong> over 𝔽<sub>p</sub>
       </p>
-
-      <strong>Example</strong>
-      <p>
-        Here a examples of simple Elliptic Curve over Finite Field, where
-        [3&lt;p&lt;1000]
-      </p>
-
-      <form onSubmit={handleSubmit} className="ecc-example">
-        <label>a</label>
-        <input type="number" name="a" onChange={handleChange} value={curve.a} />
-        <label>b</label>
-        <input type="number" name="b" onChange={handleChange} value={curve.b} />
-        <label>p</label>
-        <select name="p" onChange={handleChange} value={curve.p}>
-          {list.map((e) => {
-            return <option>{e}</option>;
-          })}
-        </select>
-        <input type="submit" value="Generate a Curve Points" />
-      </form>
-      <p>
-        y<sup>2</sup>=x<sup>3</sup>+{curve.a}
-        x+{curve.b} over 𝔽<sub>{curve.p}</sub> Points
-      </p>
-      <p style={{ fontSize: "0.7rem" }}>
-        {points.map((e, i) => {
-          return (
-            <>
-              ({e[0]},{e[1]})
-            </>
-          );
-        })}
-        ,and O (Infinity)
-      </p>
-      <p>Number of Points in this curve:{points.length + 1}</p>
-
-      <ResponsiveContainer width="90%" height={500} className="chart">
-        <ScatterChart>
-          <CartesianGrid />
-          <XAxis type="number" dataKey="x" />
-          <YAxis type="number" dataKey="y" />
-          <Tooltip cursor={{}} />
-          <Scatter
-            data={points.map((e, i) => {
-              return { x: e[0], y: e[1] };
-            })}
-            fill="var(--color-dark)"
+      <h4 onClick={toggle} className="ECC-simple">
+        Creare a simple EC <MdOutlineDoubleArrow />
+      </h4>
+      <div id="ECC-simple">
+        <p>Enter Elliptic Curve parameters, where [3&lt;p&lt;1000]</p>
+        <form onSubmit={handleSubmit} className="ecc-example">
+          <label>a</label>
+          <input
+            type="number"
+            name="a"
+            onChange={handleChange}
+            value={curve.a}
           />
-        </ScatterChart>
-      </ResponsiveContainer>
-      <strong>Point Multiplication</strong>
-      <form onSubmit={handleSubmit1} className="ecc-mult">
-        <label>k</label>
-        <input type="number" name="k" onChange={handleChange1} value={mult.k} />
-        <label>x</label>
-
-        <select name="x" onChange={handleChange1} value={mult.x}>
-          {pointsX.map((e) => {
-            return <option>{e}</option>;
+          <label>b</label>
+          <input
+            type="number"
+            name="b"
+            onChange={handleChange}
+            value={curve.b}
+          />
+          <label>p</label>
+          <select name="p" onChange={handleChange} value={curve.p}>
+            {list.map((e) => {
+              return <option>{e}</option>;
+            })}
+          </select>
+          <input type="submit" value="Generate a Curve Points" />
+        </form>
+        <div className="ecc-simple-res">
+          <p>
+            y<sup>2</sup>=x<sup>3</sup>+{curve.a}
+            x+{curve.b} over 𝔽<sub>{curve.p}</sub> Points:
+          </p>
+          <p style={{ fontSize: "0.7rem" }}>
+            {points.map((e, i) => {
+              return (
+                <>
+                  ({e[0]},{e[1]})
+                </>
+              );
+            })}
+            ,and O (Infinity)
+          </p>
+          <p>Number of Points in this curve:{points.length + 1}</p>
+          <ResponsiveContainer width="90%" height={500}>
+            <ScatterChart>
+              <CartesianGrid />
+              <XAxis type="number" dataKey="x" />
+              <YAxis type="number" dataKey="y" />
+              <Tooltip cursor={{}} />
+              <Scatter
+                data={points.map((e, i) => {
+                  return { x: e[0], y: e[1] };
+                })}
+                fill="var(--color-dark)"
+              />
+            </ScatterChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+      <h4 onClick={toggle} className="ECC-add">
+        Adding 2 points in ECC <MdOutlineDoubleArrow />
+      </h4>
+      <div id="ECC-add">
+        <p>
+          Adding two points In ECC: y<sup>2</sup>=x
+          <sup>3</sup>+{curve.a}
+          x+{curve.b} over 𝔽<sub>{curve.p}</sub>{" "}
+        </p>
+        <form>
+          <label>P</label>
+          <input type="number" placeholder="x" />
+          <input type="number" placeholder="y" />
+          <br></br>
+          <label>Q</label>
+          <input type="number" placeholder="x" />
+          <input type="number" placeholder="y" />
+          <input type="submit" />
+        </form>
+      </div>
+      <h4 onClick={toggle} className="ECC-Multi">
+        Multiplying ECC Point by Integer <MdOutlineDoubleArrow />
+      </h4>
+      <div id="ECC-Multi">
+        <form onSubmit={handleSubmit1} className="ecc-mult">
+          <label>k</label>
+          <input
+            type="number"
+            name="k"
+            onChange={handleChange1}
+            value={mult.k}
+          />
+          <label>G</label>
+          <select name="x" onChange={handleChange1} value={mult.x}>
+            <option>x</option>
+            {pointsX.map((e) => {
+              return <option>{e}</option>;
+            })}
+          </select>
+          <label>,</label>
+          <select
+            name="y"
+            onChange={handleChange1}
+            value={mult.y}
+            placeholder="y"
+          >
+            <option>y</option>
+            {pointsY.map((e) => {
+              return <option>{e}</option>;
+            })}
+          </select>
+          <input type="submit" value="Points Multiplication" />
+        </form>
+        <p>
+          multiply the generator point G({mult.x},{mult.y}) by 0, 1, ..,{" "}
+          {mult.k} In ECC: y<sup>2</sup>=x<sup>3</sup>+{curve.a}
+          x+{curve.b} over 𝔽<sub>{curve.p}</sub>
+        </p>
+        <table>
+          {mPoints.map((e, i) => {
+            return (
+              <tr>
+                <td>{i}P</td>
+                <td>{e[0] === null ? "Infinity" : `(${e[0]},${e[1]})`}</td>
+              </tr>
+            );
           })}
-        </select>
-        <label>y</label>
-        <select name="y" onChange={handleChange1} value={mult.y}>
-          {pointsY.map((e) => {
-            return <option>{e}</option>;
-          })}
-        </select>
-        <input type="submit" value="Points Multiplication" />
-      </form>
-      <p>
-        multiply the generator point G({mult.x},{mult.y}) by 0, 1, .., {mult.k}
-      </p>
-      <p>
-        {mult.x * mult.y === 0 && <p>{mult.y}</p>}
-        {mPoints.map((e, i) => {
-          return (
-            <p>
-              {i}P={e[0] === null ? "Infinity" : `(${e[0]},${e[1]})`}
-            </p>
-          );
-        })}
-      </p>
+        </table>
+      </div>
     </section>
   );
 };

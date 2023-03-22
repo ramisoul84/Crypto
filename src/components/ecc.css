@@ -1,8 +1,37 @@
+#ecc h1,
+h3 {
+  text-decoration: underline;
+}
+#ecc h4 {
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  width: fit-content;
+  font-weight: lighter;
+  font-size: 0.9rem;
+  padding: 0.1rem 1rem;
+  border: 1px solid var(--color-dark);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin: 0.5rem 1rem;
+}
+#ecc h4:hover {
+  background-color: var(--color-light);
+  color: var(--color-dark);
+}
+#ecc span {
+  color: var(--color-blue);
+}
+#ecc > div {
+  display: none;
+  margin: 0.5rem 2rem;
+}
+/*
 #ecc form {
   display: grid;
   grid-template-columns: repeat(3, 2rem 6rem);
   text-align: center;
 }
+*/
 #ecc label {
   width: 2rem;
 }
@@ -15,8 +44,14 @@
   height: 2rem;
   margin-left: 2rem;
 }
-#ecc .chart {
+#ecc .ecc-simple-res {
   display: none;
+}
+#ecc td {
+  border: 1px solid var(--color-dark);
+  text-align: center;
+  padding: 0 0.2rem;
+  font-size: 0.8rem;
 }
 
 /* ========= Media Quiries  (small) ========== */
